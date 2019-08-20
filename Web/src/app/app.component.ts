@@ -37,33 +37,32 @@ export class AppComponent  {
     joy = 'https://open.spotify.com/embed/user/enochtaangg/playlist/4ENsvFFoXRKO5F4c3v1k7F';
 
 
+
+
   postWatson(body: string) {
-    this.watson = this.watsonService.postWatson(body);
-  this.watson.subscribe(res => this.watsonObject = Object.assign({}, res));
-
-
-      setTimeout(() => console.log(this.watsonObject.document_tone.tones[0].tone_name), 1000)
-
-      setTimeout(() => {if (this.watsonObject.document_tone.tones[0].tone_id == 'sadness') {
-         this.url = this.sad;
-       } else if (this.watsonObject.document_tone.tones[0].tone_id == 'anger') {
-         this.url = this.anger;
-       } else if (this.watsonObject.document_tone.tones[0].tone_id == 'analytical') {
-         this.url = this.analytical;
-       } else if (this.watsonObject.document_tone.tones[0].tone_id == 'confident') {
-         this.url = this.confident;
-       } else if (this.watsonObject.document_tone.tones[0].tone_id == 'fear') {
-         this.url = this.fear;
-       } else if (this.watsonObject.document_tone.tones[0].tone_id == 'joy') {
-         this.url = this.joy;
-       } else if (this.watsonObject.document_tone.tones[0].tone_id == 'tentative') {
-         this.url = this.analytical;
-       } else {
-         this.url = this.joy
-       }}, 1000);
-
-
-
+  this.watson = this.watsonService.postWatson(body);
+  this.watson.subscribe(res => {
+    this.watsonObject = Object.assign({}, res)
+    if (this.watsonObject.document_tone.tones[0].tone_id == 'sadness') {
+      this.url = this.sad;
+    } else if (this.watsonObject.document_tone.tones[0].tone_id == 'anger') {
+      this.url = this.anger;
+    } else if (this.watsonObject.document_tone.tones[0].tone_id == 'analytical') {
+      this.url = this.analytical;
+    } else if (this.watsonObject.document_tone.tones[0].tone_id == 'confident') {
+      this.url = this.confident;
+    } else if (this.watsonObject.document_tone.tones[0].tone_id == 'fear') {
+      this.url = this.fear;
+    } else if (this.watsonObject.document_tone.tones[0].tone_id == 'joy') {
+      this.url = this.joy;
+    } else if (this.watsonObject.document_tone.tones[0].tone_id == 'tentative') {
+      this.url = this.analytical;
+    } else {
+      this.url = this.joy
+    }
+  
+    console.log(this.watsonObject.document_tone.tones[0].tone_name)
+  });
     }
 
 
@@ -76,9 +75,11 @@ export class AppComponent  {
 
   getFromDb() {
     this.textObservable = this.db.list('/').valueChanges();
-    this.textObservable.subscribe(res => this.dbText.text = Object.assign(res));
-    setTimeout(() => console.log(this.dbText.text[0]), 1000);
-    setTimeout(() => this.postWatson(this.dbText.text[0]), 1000);
+    this.textObservable.subscribe(res => {
+      this.postWatson(this.dbText.text[0])
+    });
+    
+    // setTimeout(() => console.log(this.dbText.text[0]), 1000);
   }
 
   toggleMobileApp(){
