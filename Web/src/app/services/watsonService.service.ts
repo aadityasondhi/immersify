@@ -23,9 +23,6 @@ export class WatsonService {
 
   postWatson(body: string): Observable<any> {
     this.reqbody.text = body;
-    return this.http.post(this.watson_url, this.reqbody, this.httpOptions)
-      .map(res => {
-        return res;
-      });
+    return this.http.post(this.watson_url, this.reqbody, this.httpOptions);
   }
 }
